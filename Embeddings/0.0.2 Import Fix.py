@@ -139,3 +139,5 @@ model.compile(loss='categorical_crossentropy',
 
 model.fit(x_train, y_train, validation_data=(x_val, y_val),
           nb_epoch=2, batch_size=128)
+
+# Dec 30, 2016  loss: 0.3069 - acc: 0.8908 - val_loss: 0.1421 - val_acc: 0.9549
