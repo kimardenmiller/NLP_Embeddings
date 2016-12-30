@@ -4,13 +4,11 @@
 # train a text classification model on the 20 Newsgroup data set
 # (classification of newsgroup messages into 20 different categories).
 #
-# GloVe embedding data can be found at:
-# http://nlp.stanford.edu/data/glove.6B.zip
+# GloVe embedding :  http://nlp.stanford.edu/data/glove.6B.zip
 # (source page: http://nlp.stanford.edu/projects/glove/)
 #
 # 20 Newsgroup data can be found at:
 # http://www.cs.cmu.edu/afs/cs.cmu.edu/project/theo-20/www/data/news20.html
-
 
 from __future__ import print_function
 import os
@@ -26,9 +24,9 @@ import pandas as pd
 
 np.random.seed(1337)
 
-BASE_DIR = ''
-GLOVE_DIR = BASE_DIR + '/Users/kimardenmiller/Documents/Local Data/xData/glove.6B/'
-TEXT_DATA_DIR = BASE_DIR + '/Users/kimardenmiller/Documents/Local Data/xData/20_newsgroup/'
+BASE_DIR = '/Users/kimardenmiller/Documents/Local Data/NLP_Embeddings/'
+GLOVE_DIR = BASE_DIR + 'glove.6B/'
+TEXT_DATA_DIR = BASE_DIR + '20_newsgroup/'
 MAX_SEQUENCE_LENGTH = 1000
 MAX_NB_WORDS = 20000
 EMBEDDING_DIM = 100
@@ -43,8 +41,8 @@ embeddings_index = {}
 f = pd.read_csv(os.path.join(GLOVE_DIR, 'glove.6B.100d_2.txt'), sep=" ", header=None).values
 for line in f:
     word = line[0]
-    coefs = np.asarray(line[1:], dtype='float32')
-    embeddings_index[word] = coefs
+    coefficients = np.asarray(line[1:], dtype='float32')
+    embeddings_index[word] = coefficients
 
 print('Found %s word vectors.' % len(embeddings_index))
 
