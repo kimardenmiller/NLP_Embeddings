@@ -50,25 +50,26 @@ print('Found %s word vectors.' % len(embeddings_index))
 print('Processing text data set')
 
 texts = []  # list of text samples
-labels_index = {}  # dictionary mapping label name to numeric id
+labels_index = {}  # dictionary mapping label news_group to numeric id
 labels = []  # list of label ids
-for name in sorted(os.listdir(TEXT_DATA_DIR)):
-    path = os.path.join(TEXT_DATA_DIR, name)
+for news_group in sorted(os.listdir(TEXT_DATA_DIR)):
+    path = os.path.join(TEXT_DATA_DIR, news_group)
     if os.path.isdir(path):
         label_id = len(labels_index)
-        labels_index[name] = label_id
-        for fname in sorted(os.listdir(path)):
-            if fname.isdigit():
-                fpath = os.path.join(path, fname)
+        labels_index[news_group] = label_id
+        for post in sorted(os.listdir(path)):
+            if post.isdigit():
+                post_path = os.path.join(path, post)
                 if sys.version_info < (3,):
-                    f = open(fpath)
+                    f = open(post_path)
                 else:
-                    f = open(fpath, encoding='latin-1')
+                    f = open(post_path, encoding='latin-1')
                 texts.append(f.read())
                 f.close()
                 labels.append(label_id)
 
 print('Found %s texts.' % len(texts))
+print(texts[0])
 
 # finally, vectorize the text samples into a 2D integer tensor
 tokenizer = Tokenizer(nb_words=MAX_NB_WORDS)
@@ -77,13 +78,16 @@ sequences = tokenizer.texts_to_sequences(texts)
 
 word_index = tokenizer.word_index
 print('Found %s unique tokens.' % len(word_index))
+# print('word index', word_index[0])
 
 data = pad_sequences(sequences, maxlen=MAX_SEQUENCE_LENGTH)
 
 labels = to_categorical(np.asarray(labels))
 print('Shape of data tensor:', data.shape)
+print('Sample data tensor:', data[0, 0:])
 print('Shape of label tensor:', labels.shape)
-
+print('Sample label tensor:', labels[690:750, 0:])
+sys.exit()
 # split the data into a training set and a validation set
 indices = np.arange(data.shape[0])
 np.random.shuffle(indices)
@@ -140,4 +144,4 @@ model.compile(loss='categorical_crossentropy',
 model.fit(x_train, y_train, validation_data=(x_val, y_val),
           nb_epoch=2, batch_size=128)
 
-# Dec 30, 2016  loss: 0.3069 - acc: 0.8908 - val_loss: 0.1421 - val_acc: 0.9549
+#  Dec 30, 2016  loss: 0.3069 - acc: 0.8908 - val_loss: 0.1421 - val_acc: 0.9549
